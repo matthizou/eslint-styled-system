@@ -25,7 +25,7 @@ styled-system.
      <td>
      <a href="">no-styled-props-in-jsx</a>
      </td>
-     <td>Disallow (or restrict to a threshold) the usage of styled props in the JSX markup
+     <td>Disallow (or restrict) the usage of styled props in the JSX markup
      </td>
     </tr>
 </table>
