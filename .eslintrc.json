@@ -1,0 +1,31 @@
+{
+  "env": {
+    "node": true,
+    "jest/globals": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "script"
+  },
+  "plugins": ["eslint-plugin", "node", "jest"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:eslint-plugin/recommended",
+    "plugin:node/recommended",
+    "plugin:jest/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "spaced-comment": ["error", "always"],
+    "no-var": "error",
+    "object-shorthand": "error",
+    "prefer-arrow-callback": "error",
+    "prefer-const": "error",
+    "strict": 0,
+    "eslint-plugin/prefer-placeholders": 0,
+    "no-console": 0,
+    "eslint-plugin/test-case-shorthand-strings": 0,
+    "node/no-unsupported-features": ["error", { "version": 9 }],
+    "node/no-unpublished-require": 0
+  }
+}
