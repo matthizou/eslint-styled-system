@@ -42,10 +42,12 @@ module.exports = {
     try {
       theme = loadTheme({ fullPath, useES6Modules })
       // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      console.error(e)
+    }
     if (!theme) return {}
 
-    // console.log('Theme 💅:',theme)
+    // console.log('Theme 💅:', theme)
 
     const sourceCode = context.getSourceCode()
     // let styleComponentImport
@@ -71,7 +73,7 @@ module.exports = {
         ) {
           return
         }
-        quasi.quasis.map(templateLiteralPiece => {
+        quasi.quasis.map((templateLiteralPiece) => {
           const text = templateLiteralPiece.value.raw
           let match = CSS_RULE_REGEXP.exec(text)
           while (match !== null) {
@@ -106,7 +108,7 @@ module.exports = {
                 },
                 fix: noFix
                   ? undefined
-                  : fixer =>
+                  : (fixer) =>
                       fixFunction({
                         fixer,
                         useThemeGet,
@@ -143,7 +145,7 @@ function checkForThemeValue({ property, value, theme = {}, ignoreZeros }) {
       property === 'border-radius'
     ) {
       const processedValues = value.split(' ').map(
-        subValue =>
+        (subValue) =>
           getThemeValue({
             field,
             value: subValue.toLowerCase(),

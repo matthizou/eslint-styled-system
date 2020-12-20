@@ -18,8 +18,7 @@ const themeFileWithES5 = {
 }
 
 const themeFileWithES6 = {
-  path:
-    './rules/styled-components-with-styled-system/test-data/theme-es6-modules.js',
+  path: './rules/no-hardcoded-values/test-data/theme-es6-modules.js',
   useES6Modules: true,
 }
 
@@ -226,7 +225,11 @@ ruleTester.run('styled-components-with-styled-system', rule, {
       \`
       `,
       options: [
-        { themeFile: themeFileWithES6, ignoreZeros: false, noFix: false },
+        {
+          themeFile: themeFileWithES6,
+          ignoreZeros: false,
+          noFix: false,
+        },
       ],
       errors: [useThemeValue('space', 0)],
     },

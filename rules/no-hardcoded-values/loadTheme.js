@@ -21,7 +21,7 @@ const THEME_FIELDS = [
   'shadows',
   'textStyles',
   'colorStyles',
-  'buttons'
+  'buttons',
 ]
 
 function loadTheme({ fullPath, useES6Modules }) {
@@ -53,13 +53,15 @@ function loadTheme({ fullPath, useES6Modules }) {
       }
       // eslint-disable-next-line no-empty
     } catch (e) {}
+  } else {
+    console.warn('Path of theme not found:', fullPath)
   }
 
   FILE_CACHE.set(fullPath, {
     lastChecked: now,
     fileExists,
     lastModified,
-    theme
+    theme,
   })
   return theme || null
 }
@@ -123,26 +125,26 @@ function loadThemeWithES6Module(fullPath) {
   const themeSourceCode = fs.readFileSync(fullPath, 'utf8')
   const tree = babylon.parse(themeSourceCode, {
     sourceType: 'module',
-    plugins: ['objectRestSpread']
+    plugins: ['objectRestSpread'],
   })
   const topLevelNodes = tree.program.body
 
   const theme = topLevelNodes
     .filter(
-      node =>
+      (node) =>
         node.type === 'VariableDeclaration' &&
         node.declarations &&
-        node.declarations.length
+        node.declarations.length,
     )
-    .map(node => node.declarations)
+    .map((node) => node.declarations)
     // flatten top-level declarations
     .reduce((res, node) => [...res, ...node], [])
-    .filter(node => THEME_FIELDS.includes(node.id.name))
+    .filter((node) => THEME_FIELDS.includes(node.id.name))
     .map(({ id, init }) => ({
       name: id.name,
-      value: getDeclarationValues(init)
+      value: getDeclarationValues(init),
     }))
-    .filter(field => Boolean(field.value))
+    .filter((field) => Boolean(field.value))
     .reduce((res, { name, value }) => ({ ...res, [name]: value }), {})
   // console.log('🐻', theme)
 
@@ -161,21 +163,21 @@ function getDeclarationValues(node) {
   const { type } = node
   if (type === 'ArrayExpression') {
     const { elements } = node
-    return elements.map(node =>
-      isStringOrNumber(node) ? node.value.toString() : null
+    return elements.map((node) =>
+      isStringOrNumber(node) ? node.value.toString() : null,
     )
   } else if (type === 'ObjectExpression') {
     const { properties } = node
     const values = properties.map(({ value }) => value)
     if (values.find(isStringOrNumber)) {
       return properties
-        .filter(property => isStringOrNumber(property.value))
+        .filter((property) => isStringOrNumber(property.value))
         .reduce(
           (res, { key, value }) => ({
             [key.name]: value.value,
-            ...res
+            ...res,
           }),
-          {}
+          {},
         )
     }
   }
